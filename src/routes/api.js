@@ -3,7 +3,7 @@
 const ROUTES = {
 
     'get' : {
-        banknifty: "/api/banknifty"
+        banknifty: process.env.API_URL + "/banknifty"
     }
 
 }

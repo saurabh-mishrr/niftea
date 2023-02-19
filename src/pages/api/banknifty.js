@@ -1,6 +1,5 @@
 import dbConnect from "@/configs/mongo.db";
 import BankNifty from "@/models/banknifty.model";
-import mongoose from "mongoose";
 
 export default async function handler(req, res) {
 
