@@ -4,61 +4,70 @@ import ROUTES from '@/routes/api'
 import { Chart } from 'chart.js/auto'
 import * as Utils from '../core/Utils'
 import axios from 'axios';
+import { useRouter } from 'next/router'
+
+
+
+export default function Home() {
 
 
 (async () => {
 
   try {
-    const res = await axios.get(ROUTES.get.banknifty, {responseType: 'json'})
+    const router = useRouter()
+    const { tdate } = router.query
+    const res = await axios.get(ROUTES.get.banknifty + "?tdate=" + tdate, {responseType: 'json'})
     const result = res.data
+    if (result) {
 
-    let {labels, bn50_per, bn49_per } = {...result.data}
-    
-    const data = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'BN-50',
-          data: bn50_per,
-          borderColor: Utils.CHART_COLORS.green,
-          backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0),
-          borderWidth: 1,
-          borderRadius:2,
-          borderSkipped: false,
-        },
-        {
-          label: 'BN-49',
-          data: bn49_per,
-          borderColor: Utils.CHART_COLORS.yellow,
-          backgroundColor: Utils.transparentize(Utils.CHART_COLORS.yellow, 0),
-          borderWidth: 1,
-          borderRadius: 2,
-          borderSkipped: false,
-        }
-      ]
-    };
-    const config = {
-      type: 'bar',
-      data: data,
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+      let {labels, bn50_per, bn49_per } = {...result.data}
+      
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'BN-50',
+            data: bn50_per,
+            borderColor: Utils.CHART_COLORS.green,
+            backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0),
+            borderWidth: 1,
+            borderRadius:2,
+            borderSkipped: false,
           },
-          title: {
-            display: true,
-            text: 'BankNifty'
+          {
+            label: 'BN-49',
+            data: bn49_per,
+            borderColor: Utils.CHART_COLORS.yellow,
+            backgroundColor: Utils.transparentize(Utils.CHART_COLORS.yellow, 0),
+            borderWidth: 1,
+            borderRadius: 2,
+            borderSkipped: false,
           }
-        }
-      },
-    };
-  
-    if (typeof window !== typeof undefined) {
-      new Chart(
-        document.getElementById('acquisitions'),
-        config
-      )
+        ]
+      };
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'BankNifty'
+            }
+          }
+        },
+      };
+    
+      if (typeof window !== typeof undefined) {
+        new Chart(
+          document.getElementById('acquisitions'),
+          config
+        )
+      }
     }
 
   } catch (err) {
@@ -66,8 +75,6 @@ import axios from 'axios';
   }
 
 })();
-
-export default function Home() {
   return (
     <>
       <Head>
@@ -78,7 +85,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.description}>
-          <div className={styles.chartCanva}><canvas id="acquisitions"></canvas></div>
+          <div className={styles.chartCanva}><canvas id="acquisitions" width="1700px"></canvas></div>
         </div>
       </main>
     </>

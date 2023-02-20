@@ -11,7 +11,8 @@ export default async function handler(req, res) {
         
         case 'GET':
             try {
-                const result = await BankNifty.find({'date' : '2023-02-19'})
+                const { tdate } = req.query
+                const result = await BankNifty.find({'date' : `${tdate}`})
 
                 let labels = (result[0].data).map(function(a){
                     return a.time
