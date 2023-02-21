@@ -1,5 +1,6 @@
 import dbConnect from "@/configs/mongo.db";
 import BankNifty from "@/models/banknifty.model";
+import NextCors from 'nextjs-cors';
 
 export default async function handler(req, res) {
 
@@ -11,6 +12,13 @@ export default async function handler(req, res) {
         
         case 'GET':
             try {
+
+                await NextCors(req, res, {
+                    // Options
+                    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+                    origin: '*',
+                    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+                 });
                 const { tdate } = req.query
                 const result = await BankNifty.find({'date' : `${tdate}`})
 
