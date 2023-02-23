@@ -7,7 +7,7 @@ var axiosA = require('axios');
 var axiosB = require('axios');
 
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('* 9-15 * * 1-5', async () => {
   
 
 // (async () => {
